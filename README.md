@@ -6,4 +6,5 @@
     - Implement Legal Move Detection
     - En Pessant
     - Implement Check
+    - Implement Promotions
     - Implement Timer?
