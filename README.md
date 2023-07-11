@@ -1,6 +1,6 @@
 # Chess
 
-## Todo
+### Todo
     - [x] Implement a way to distinguish piece colors
     - [x] Implement movement
     - [x] Implement Legal Move Detection
