@@ -7,6 +7,7 @@ def mainLoop():
     global board
 
     board.draw()
+    print("Syntax Example: e2e4")
     move = game_logic.getMove()
     start_pos = move[0]
     end_pos = move[1]
@@ -46,5 +47,4 @@ if __name__ == "__main__":
     for i in range(20):
         mainLoop()
         WhiteTurn = not WhiteTurn
-
     board.draw()

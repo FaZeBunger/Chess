@@ -24,6 +24,6 @@ def parseMove(Move: str):
         return False
 
     print((start_coords.x, start_coords.y), (end_coords.x, end_coords.y))
-    input("waiting for input")
+    input("Press Enter to continue")
 
     return (start_coords, end_coords)
