@@ -1,4 +1,3 @@
-
 def KingMove(x_diff, y_diff):
     if x_diff <= 1 and y_diff:
         return True
@@ -23,12 +22,15 @@ def RookMove(x_diff, y_diff):
     return False
 
 
-def PawnMove(x_diff, y_diff):
-    # Note this does not take into consideration the pawn first move,
-    # En Pessant, or capturing
+def PawnMove(x_diff, y_diff, is_first_move):
+    # Note this does not take into consideration En Pessant, or capturing
 
-    if 1 <= y_diff <= 2:
+    if is_first_move:
+        if 1 <= y_diff <= 2:
+            return True
+    elif y_diff == 1:
         return True
+
     return False
 
 

@@ -5,10 +5,11 @@ import PieceMoves
 
 
 class Piece:
-    def __init__(self, type, color):
+    def __init__(self, type, color, coords: Coord):
         self.color = color
         self.type = type
         self.img = self.format_img()
+        self.coords = coords
 
     def check_if_legal_move(self, origin, dest):
         x_diff = abs(dest.x - origin.x)
@@ -32,9 +33,9 @@ class Piece:
 
     def swap(self):
         if self.color == 'black':
-            return Piece(color="white", type=self.type)
+            return Piece(color="white", type=self.type, coords=self.coords)
         else:
-            return Piece(color="black", type=self.type)
+            return Piece(color="black", type=self.type, coords=self.coords)
 
     def format_img(self):
         if self.color == 'black':
@@ -49,26 +50,36 @@ class Piece:
 
 class ChessBoard:
     def __init__(self):
-        self.board = [[Piece(color=None, type=' ')
-                       for _ in range(8)] for _ in range(8)]
+        self.board = [[Piece(color=None, type=' ', coords=Coord(x, y))
+                       for x in range(8)] for y in range(8)]
         self._initBoard()
 
     def _initBoard(self):
         self.board[0] = [
-            Piece(color='black', type='R'), Piece(color='black', type='N'),
-            Piece(color='black', type='B'), Piece(color='black', type='Q'),
-            Piece(color='black', type='K'), Piece(color='black', type='B'),
-            Piece(color='black', type='N'), Piece(color='black', type='R')
+            Piece(color='black', type='R', coords=Coord(0, 0)),
+            Piece(color='black', type='N', coords=Coord(0, 1)),
+            Piece(color='black', type='B', coords=Coord(0, 2)),
+            Piece(color='black', type='Q', coords=Coord(0, 3)),
+            Piece(color='black', type='K', coords=Coord(0, 4)),
+            Piece(color='black', type='B', coords=Coord(0, 5)),
+            Piece(color='black', type='N', coords=Coord(0, 6)),
+            Piece(color='black', type='R', coords=Coord(0, 7))
         ]
         self.board[-1] = [
-            Piece(color='white', type='R'), Piece(color='white', type='N'),
-            Piece(color='white', type='B'), Piece(color='white', type='Q'),
-            Piece(color='white', type='K'), Piece(color='white', type='B'),
-            Piece(color='white', type='N'), Piece(color='white', type='R')
+            Piece(color='white', type='R', coords=Coord(-1, 0)),
+            Piece(color='white', type='N', coords=Coord(-1, 1)),
+            Piece(color='white', type='B', coords=Coord(-1, 2)),
+            Piece(color='white', type='Q', coords=Coord(-1, 3)),
+            Piece(color='white', type='K', coords=Coord(-1, 4)),
+            Piece(color='white', type='B', coords=Coord(-1, 5)),
+            Piece(color='white', type='N', coords=Coord(-1, 6)),
+            Piece(color='white', type='R', coords=Coord(-1, 7))
         ]
 
-        self.board[1] = [Piece(color='black', type='P') for _ in range(8)]
-        self.board[-2] = [Piece(color='white', type='P') for _ in range(8)]
+        self.board[1] = [Piece(color='black', type='P',
+                               coords=Coord(x, 1)) for x in range(8)]
+        self.board[-2] = [Piece(color='white', type='P',
+                                coords=Coord(x, -2)) for x in range(8)]
 
     def draw(self):
         if os.name == "nt":
@@ -93,6 +104,6 @@ class ChessBoard:
         self.board[7-end_coord.y][end_coord.x] = self.board[7 -
                                                             start_coord.y][start_coord.x]
         self.board[7 -
-                   start_coord.y][start_coord.x] = Piece(color=None, type=' ')
+                   start_coord.y][start_coord.x] = Piece(color=None, type=' ', coords=start_coord)
 
         return True
