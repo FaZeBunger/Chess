@@ -1,6 +1,9 @@
+import sys
+
+sys.path.append("dep")
+
 import Board
 import game_logic
-
 
 def mainLoop():
     global WhiteTurn

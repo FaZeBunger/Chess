@@ -71,7 +71,10 @@ class ChessBoard:
         self.board[-2] = [Piece(color='white', type='P') for _ in range(8)]
 
     def draw(self):
-        os.system("clear")
+        if os.name == "nt":
+            os.system("cls")
+        else:
+            os.system("clear")
         print("     A   B   C   D   E   F   G   H")
         LINE = "   +---+---+---+---+---+---+---+---+"
         for line in range(9):
