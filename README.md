@@ -8,3 +8,4 @@
     - Implement Check
     - Implement Promotions
     - Implement Timer?
+    - Fix Pieces able to jump over eachother
