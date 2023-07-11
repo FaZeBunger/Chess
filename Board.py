@@ -85,10 +85,11 @@ class ChessBoard:
 
         # Check if the Piece can make the Move
         if not self.board[7-start_coord.y][start_coord.x].check_if_legal_move(start_coord, end_coord):
-            print("Unable to make Move")
             return False
 
         self.board[7-end_coord.y][end_coord.x] = self.board[7 -
                                                             start_coord.y][start_coord.x]
         self.board[7 -
                    start_coord.y][start_coord.x] = Piece(color=None, type=' ')
+
+        return True

@@ -18,6 +18,11 @@ def parseMove(Move: str):
     start_coords = Coord(ord(start[0].upper()) - 65, int(start[1]) - 1)
     end_coords = Coord(ord(dest[0].upper()) - 65, int(dest[1]) - 1)
 
+    if start_coords.x <= 0 or start_coords.y >= 8:
+        return False
+    if end_coords.x <= 0 or end_coords.y >= 8:
+        return False
+
     print((start_coords.x, start_coords.y), (end_coords.x, end_coords.y))
     input("waiting for input")
 

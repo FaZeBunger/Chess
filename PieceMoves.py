@@ -1,5 +1,6 @@
+
 def KingMove(x_diff, y_diff):
-    if x_diff <= 1 and y_diff <= 1:
+    if x_diff <= 1 and y_diff:
         return True
     return False
 
