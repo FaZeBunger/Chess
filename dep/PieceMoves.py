@@ -20,8 +20,9 @@ def BishopMove(x_diff, y_diff):
 
 
 def KnightMove(x_diff, y_diff):
-    if [x_diff, y_diff].sort() == [1, 2]:
+    if sorted([abs(x_diff), abs(y_diff)]) == [1, 2]:
         return True
+
     return False
 
 
@@ -31,11 +32,17 @@ def RookMove(x_diff, y_diff):
     return False
 
 
-def PawnMove(x_diff, y_diff):
+def PawnMove(x_diff, y_diff, isFirstMove):
     # Note this does not take into consideration En Pessant, or capturing
+    if y_diff == 1:
+        if 0 <= x_diff == 1:
+            return True
+        return False
 
-    if 1 <= y_diff <= 2:
-        return True
+    elif isFirstMove:
+        if 1 <= y_diff <= 2:
+            return True
+
     return False
 
 

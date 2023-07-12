@@ -15,6 +15,7 @@ def mainLoop():
 
     if not move:
         mainLoop()
+        return
 
     start_pos = move[0]
     end_pos = move[1]

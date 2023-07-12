@@ -10,12 +10,15 @@ class Piece:
         self.type = type
         self.img = self.format_img()
         self.coords = coords
+        self.isFirstMove = True
 
     def check_if_legal_move(self, origin, dest):
-        x_diff = abs(dest.x - origin.x)
-        y_diff = abs(dest.y - origin.y)
-        match self.type:
+        signed_x_diff = dest.x - origin.x
+        signed_y_diff = dest.y - origin.y
+        x_diff = abs(signed_x_diff)
+        y_diff = abs(signed_y_diff)
 
+        match self.type:
             case 'K':
                 return PieceMoves.KingMove(x_diff, y_diff)
             case 'Q':
@@ -27,7 +30,20 @@ class Piece:
             case 'R':
                 return PieceMoves.RookMove(x_diff, y_diff)
             case 'P':
-                return PieceMoves.PawnMove(x_diff, y_diff)
+                # Checks if Piece is trying to move backwards
+                if self.color == 'white':
+                    if signed_y_diff < 0:
+                        return False
+                else:
+                    if signed_y_diff > 0:
+                        return False
+                # Checks if pawn is moving to the column next to it or not
+                if -1 <= signed_x_diff <= 1:
+                    if PieceMoves.PawnMove(x_diff, y_diff, self.isFirstMove):
+                        self.isFirstMove = False
+                        return True
+                else:
+                    return False
             case _:
                 print("There is no piece on this square")
 
@@ -100,6 +116,7 @@ class ChessBoard:
                 print(LineWP)
 
         print("     A   B   C   D   E   F   G   H")
+        print("")
 
     def makeMove(self, Move: (Coord, Coord)):
         (start_coord, end_coord) = Move[0], Move[1]
@@ -112,8 +129,9 @@ class ChessBoard:
         if start_piece.check_if_legal_move(start_coord, end_coord) is False:
             return False
 
-        if self.CheckBetween(start_coord, end_coord) is False:
-            return False
+        if start_piece.type != 'N':
+            if self.CheckBetween(start_coord, end_coord) is False:
+                return False
 
         self.board[7 - end_coord.y][end_coord.x] = start_piece
         end_piece.coords = Coord(end_coord.x, end_coord.y)
@@ -130,6 +148,7 @@ class ChessBoard:
 
         # Check if move is diagonal
         if x_diff == y_diff:
+            input("Diagonal check active")
             # Get whether x and y should go up or down
             if start_point.x > end_point.x:
                 x_step = -1
@@ -155,7 +174,8 @@ class ChessBoard:
             return True
 
         # Check for horizontal movement
-        elif x_diff and not y_diff:
+        elif y_diff and not x_diff:
+            input("Horizontal check active")
             current_row = actual_start_y
 
             if start_point.x > end_point.x:
@@ -163,14 +183,15 @@ class ChessBoard:
             else:
                 step = 1
 
-            for current_col in range(start_point.x, end_point.x, step):
+            for current_col in range(start_point.x + step, end_point.x, step):
                 if self.board[current_row][current_col].type != ' ':
                     return False
 
             return True
 
         # Check for vertical movement
-        elif y_diff and not x_diff:
+        elif x_diff and not y_diff:
+            input("Vertical check active")
             current_col = start_point.x
 
             if actual_start_y > actual_end_y:
@@ -178,8 +199,9 @@ class ChessBoard:
             else:
                 step = 1
 
-            for current_row in range(actual_start_y, actual_end_y, step):
+            for current_row in range(actual_start_y + step, actual_end_y, step):
                 if self.board[current_row][current_col].type != ' ':
+                    input("Vertical check failed ")
                     return False
 
             return True
