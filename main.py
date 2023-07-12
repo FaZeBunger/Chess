@@ -11,6 +11,11 @@ def mainLoop():
 
     board.draw()
     print("Syntax Example: e2e4")
+    if WhiteTurn:
+        print("White's Turn")
+    else:
+        print("Black's Turn")
+
     move = game_logic.getMove()
 
     if not move:
@@ -55,4 +60,5 @@ if __name__ == "__main__":
     for i in range(20):
         mainLoop()
         WhiteTurn = not WhiteTurn
+
     board.draw()

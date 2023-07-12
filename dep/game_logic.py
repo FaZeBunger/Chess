@@ -15,6 +15,7 @@ def getMove():
 def parseMove(Move: str):
     if len(Move) != 4:
         getMove()
+        return
 
     start, dest = Move[:2], Move[2:]
 
@@ -23,12 +24,16 @@ def parseMove(Move: str):
     end_coords = Coord(ord(dest[0].upper()) - 65, int(dest[1]) - 1)
 
     if start_coords.x < 0 or start_coords.x >= 8:
-        if start_coords.y < 0 or start_coords.y >= 8:
-            return False
+        return False
+
+    if start_coords.y < 0 or start_coords.y >= 8:
+        return False
 
     if end_coords.x < 0 or end_coords.x >= 8:
-        if end_coords.y < 0 or end_coords.y >= 8:
-            return False
+        return False
+
+    if end_coords.y < 0 or end_coords.y >= 8:
+        return False
 
     print(f"Start: {start_coords.debug()}   End: {end_coords.debug()}")
     input("Press Enter to Confirm")

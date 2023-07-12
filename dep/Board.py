@@ -120,6 +120,8 @@ class ChessBoard:
 
     def makeMove(self, Move: (Coord, Coord)):
         (start_coord, end_coord) = Move[0], Move[1]
+        x_diff = abs(start_coord.x - end_coord.x)
+        # y_diff = abs(start_coord.y - end_coord.y)
 
         start_piece = self.board[7 - start_coord.y][start_coord.x]
         end_piece = self.board[7 - end_coord.y][end_coord.x]
@@ -130,8 +132,15 @@ class ChessBoard:
             return False
 
         if start_piece.type != 'N':
-            if self.CheckBetween(start_coord, end_coord) is False:
-                return False
+            if start_piece.type != 'P':
+                if start_piece.type != 'K':
+                    if self.CheckBetween(start_coord, end_coord) is False:
+                        return False
+
+        if start_piece.type == 'P':
+            if x_diff == 1:
+                if end_piece.type == ' ':
+                    return False
 
         self.board[7 - end_coord.y][end_coord.x] = start_piece
         end_piece.coords = Coord(end_coord.x, end_coord.y)
