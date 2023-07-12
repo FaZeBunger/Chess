@@ -84,19 +84,22 @@ class ChessBoard:
         self.board[6] = [Piece(color='white', type='P',
                                coords=Coord(x, 6)) for x in range(8)]
 
-    def draw(self):
+    def clearScreen(self):
         if os.name == "nt":
             os.system("cls")
         else:
             os.system("clear")
-        print("     A   B   C   D   E   F   G   H")
+
+    def draw(self):
+        self.clearScreen()
         LINE = "   +---+---+---+---+---+---+---+---+"
         for line in range(9):
             print(LINE)
             if line != 8:
                 LineWP = f"{8-line}: | {self.board[line][0].img} | {self.board[line][1].img} | {self.board[line][2].img} | {self.board[line][3].img} | {self.board[line][4].img} | {self.board[line][5].img} | {self.board[line][6].img} | {self.board[line][7].img} |"
-
                 print(LineWP)
+
+        print("     A   B   C   D   E   F   G   H")
 
     def makeMove(self, Move: (Coord, Coord)):
         (start_coord, end_coord) = Move[0], Move[1]
@@ -106,16 +109,77 @@ class ChessBoard:
         blank_piece = Piece(color=None, type=' ', coords=start_coord)
 
         # Check if the Piece can make the Move
-        if not start_piece.check_if_legal_move(start_coord, end_coord):
+        if start_piece.check_if_legal_move(start_coord, end_coord) is False:
             return False
 
-        print(f"Old coords: {start_piece.coords_as_tuple()}")
+        if self.CheckBetween(start_coord, end_coord) is False:
+            return False
 
         self.board[7 - end_coord.y][end_coord.x] = start_piece
         end_piece.coords = Coord(end_coord.x, end_coord.y)
         self.board[7 - start_coord.y][start_coord.x] = blank_piece
 
-        print(f"New Coords: {end_piece.coords_as_tuple()}")
-        input()
-
         return True
+
+    def CheckBetween(self, start_point, end_point):
+        y_diff = abs(start_point.x - end_point.x)
+        x_diff = abs(start_point.y - end_point.y)
+
+        actual_start_y = 7 - start_point.y
+        actual_end_y = 7 - end_point.y
+
+        # Check if move is diagonal
+        if x_diff == y_diff:
+            # Get whether x and y should go up or down
+            if start_point.x > end_point.x:
+                x_step = -1
+            else:
+                x_step = 1
+
+            if actual_start_y > actual_end_y:
+                y_step = -1
+            else:
+                y_step = 1
+
+            curr_x = start_point.x
+            curr_y = actual_start_y
+
+            # Diagonal length is the same as horizontal or vertical length
+            for _ in range(x_diff):
+                curr_x += x_step
+                curr_y += y_step
+
+                if self.board[curr_y][curr_x].type != ' ':
+                    return False
+
+            return True
+
+        # Check for horizontal movement
+        elif x_diff and not y_diff:
+            current_row = actual_start_y
+
+            if start_point.x > end_point.x:
+                step = -1
+            else:
+                step = 1
+
+            for current_col in range(start_point.x, end_point.x, step):
+                if self.board[current_row][current_col].type != ' ':
+                    return False
+
+            return True
+
+        # Check for vertical movement
+        elif y_diff and not x_diff:
+            current_col = start_point.x
+
+            if actual_start_y > actual_end_y:
+                step = -1
+            else:
+                step = 1
+
+            for current_row in range(actual_start_y, actual_end_y, step):
+                if self.board[current_row][current_col].type != ' ':
+                    return False
+
+            return True

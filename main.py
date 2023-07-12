@@ -2,8 +2,8 @@ import sys
 
 sys.path.append("dep")
 
-import Board
 import game_logic
+import Board
 
 def mainLoop():
     global WhiteTurn
@@ -12,6 +12,10 @@ def mainLoop():
     board.draw()
     print("Syntax Example: e2e4")
     move = game_logic.getMove()
+
+    if not move:
+        mainLoop()
+
     start_pos = move[0]
     end_pos = move[1]
 

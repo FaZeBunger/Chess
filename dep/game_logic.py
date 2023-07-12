@@ -23,7 +23,6 @@ def parseMove(Move: str):
     if end_coords.x <= 0 or end_coords.y >= 8:
         return False
 
-    print((start_coords.x, start_coords.y), (end_coords.x, end_coords.y))
-    input("Press Enter to continue")
+    input("Press Enter to Confirm")
 
     return (start_coords, end_coords)
