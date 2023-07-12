@@ -5,13 +5,13 @@
 - [x] Implement movement
 - [x] Implement Legal Move Detection
 - [x] Fix Pieces able to jump over eachother
-- [] En Pessant
-- [] Implement Promotions
-- [] Implement Timer?
-- [] Implement Forsyth-Edwards Notation (FEN)
-- [] Implement a way to save, and load other FEN codes
-- [] Implement a way to create a png of the current board state, for easier viewing
-- [] Implement correct move notation for move inputs
+- [ ] En Pessant
+- [ ] Implement Promotions
+- [ ] Implement Timer?
+- [ ] Implement Forsyth-Edwards Notation (FEN)
+- [ ] Implement a way to save, and load other FEN codes
+- [ ] Implement a way to create a png of the current board state, for easier viewing
+- [ ] Implement correct move notation for move inputs
 
 
 ## Known Bugs
