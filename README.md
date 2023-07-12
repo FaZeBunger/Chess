@@ -1,6 +1,5 @@
 # Chess
 
-<<<<<<< HEAD
 ### Overview
 
 This repo is my attempt at learning how to work on projects through github,
