@@ -2,8 +2,8 @@ import sys
 
 sys.path.append("dep")
 
-import game_logic
 import Board
+import game_logic
 
 def mainLoop():
     global WhiteTurn
@@ -57,7 +57,8 @@ def mainLoop():
 if __name__ == "__main__":
     board = Board.ChessBoard()
     WhiteTurn = True
-    for i in range(20):
+
+    while Board.BothKings:
         mainLoop()
         WhiteTurn = not WhiteTurn
 

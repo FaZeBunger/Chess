@@ -3,6 +3,8 @@ import os
 from game_logic import Coord
 import PieceMoves
 
+BothKings = True
+
 
 class Piece:
     def __init__(self, type, color, coords: Coord):
@@ -116,7 +118,7 @@ class ChessBoard:
                 print(LineWP)
 
         print("     A   B   C   D   E   F   G   H")
-        print("")
+        print()
 
     def makeMove(self, Move: (Coord, Coord)):
         (start_coord, end_coord) = Move[0], Move[1]
@@ -142,8 +144,11 @@ class ChessBoard:
                 if end_piece.type == ' ':
                     return False
 
+        if end_piece == 'K':
+            self.gameOver(start_piece.color)
+
         self.board[7 - end_coord.y][end_coord.x] = start_piece
-        end_piece.coords = Coord(end_coord.x, end_coord.y)
+        self.board[7 - end_coord.y][end_coord.x].coords = end_coord
         self.board[7 - start_coord.y][start_coord.x] = blank_piece
 
         return True
@@ -157,7 +162,6 @@ class ChessBoard:
 
         # Check if move is diagonal
         if x_diff == y_diff:
-            input("Diagonal check active")
             # Get whether x and y should go up or down
             if start_point.x > end_point.x:
                 x_step = -1
@@ -184,7 +188,6 @@ class ChessBoard:
 
         # Check for horizontal movement
         elif y_diff and not x_diff:
-            input("Horizontal check active")
             current_row = actual_start_y
 
             if start_point.x > end_point.x:
@@ -200,7 +203,6 @@ class ChessBoard:
 
         # Check for vertical movement
         elif x_diff and not y_diff:
-            input("Vertical check active")
             current_col = start_point.x
 
             if actual_start_y > actual_end_y:
@@ -210,7 +212,12 @@ class ChessBoard:
 
             for current_row in range(actual_start_y + step, actual_end_y, step):
                 if self.board[current_row][current_col].type != ' ':
-                    input("Vertical check failed ")
                     return False
 
             return True
+
+    def gameOver(self, winner):
+        global BothKings
+        self.draw()
+        BothKings = False
+        print(f"{winner.capitalize()} wins!")
