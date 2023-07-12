@@ -31,6 +31,9 @@ class Piece:
             case _:
                 print("There is no piece on this square")
 
+    def coords_as_tuple(self):
+        return (self.coords.x, self.coords.y)
+
     def swap(self):
         if self.color == 'black':
             return Piece(color="white", type=self.type, coords=self.coords)
@@ -78,8 +81,8 @@ class ChessBoard:
 
         self.board[1] = [Piece(color='black', type='P',
                                coords=Coord(x, 1)) for x in range(8)]
-        self.board[-2] = [Piece(color='white', type='P',
-                                coords=Coord(x, -2)) for x in range(8)]
+        self.board[6] = [Piece(color='white', type='P',
+                               coords=Coord(x, 6)) for x in range(8)]
 
     def draw(self):
         if os.name == "nt":
@@ -92,18 +95,27 @@ class ChessBoard:
             print(LINE)
             if line != 8:
                 LineWP = f"{8-line}: | {self.board[line][0].img} | {self.board[line][1].img} | {self.board[line][2].img} | {self.board[line][3].img} | {self.board[line][4].img} | {self.board[line][5].img} | {self.board[line][6].img} | {self.board[line][7].img} |"
+
                 print(LineWP)
 
     def makeMove(self, Move: (Coord, Coord)):
-        start_coord, end_coord = Move[0], Move[1]
+        (start_coord, end_coord) = Move[0], Move[1]
+
+        start_piece = self.board[7 - start_coord.y][start_coord.x]
+        end_piece = self.board[7 - end_coord.y][end_coord.x]
+        blank_piece = Piece(color=None, type=' ', coords=start_coord)
 
         # Check if the Piece can make the Move
-        if not self.board[7-start_coord.y][start_coord.x].check_if_legal_move(start_coord, end_coord):
+        if not start_piece.check_if_legal_move(start_coord, end_coord):
             return False
 
-        self.board[7-end_coord.y][end_coord.x] = self.board[7 -
-                                                            start_coord.y][start_coord.x]
-        self.board[7 -
-                   start_coord.y][start_coord.x] = Piece(color=None, type=' ', coords=start_coord)
+        print(f"Old coords: {start_piece.coords_as_tuple()}")
+
+        self.board[7 - end_coord.y][end_coord.x] = start_piece
+        end_piece.coords = Coord(end_coord.x, end_coord.y)
+        self.board[7 - start_coord.y][start_coord.x] = blank_piece
+
+        print(f"New Coords: {end_piece.coords_as_tuple()}")
+        input()
 
         return True

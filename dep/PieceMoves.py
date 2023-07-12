@@ -22,15 +22,11 @@ def RookMove(x_diff, y_diff):
     return False
 
 
-def PawnMove(x_diff, y_diff, is_first_move):
+def PawnMove(x_diff, y_diff):
     # Note this does not take into consideration En Pessant, or capturing
 
-    if is_first_move:
-        if 1 <= y_diff <= 2:
-            return True
-    elif y_diff == 1:
+    if 1 <= y_diff <= 2:
         return True
-
     return False
 
 
