@@ -1,3 +1,11 @@
+# Takes current Piece coordinates and computes whether the move is a possible
+# move based on the type of Piece
+#
+# *Note:
+#   This does not consider whether there are pieces in between the origin coordinate
+#   and the destination coordinate for pieces like the queen, bishop, rook, or
+#   in the case of the king, whether or not the piece is guarded or not and can
+#   be taken
 
 def KingMove(x_diff, y_diff):
     if x_diff <= 1 and y_diff:
@@ -12,8 +20,9 @@ def BishopMove(x_diff, y_diff):
 
 
 def KnightMove(x_diff, y_diff):
-    if [x_diff, y_diff].sort() == [1, 2]:
+    if sorted([abs(x_diff), abs(y_diff)]) == [1, 2]:
         return True
+
     return False
 
 
@@ -23,12 +32,19 @@ def RookMove(x_diff, y_diff):
     return False
 
 
-def PawnMove(x_diff, y_diff):
-    # Note this does not take into consideration the pawn first move,
-    # En Pessant, or capturing
+def PawnMove(x_diff, y_diff, isFirstMove):
+    # Note this does not take into consideration En Pessant, or only moving
+    # diagonal on captures
 
-    if 1 <= y_diff <= 2:
-        return True
+    if y_diff == 1:
+        if 0 <= x_diff == 1:
+            input(f"X Diff: {x_diff}")
+            return True
+
+    elif isFirstMove:
+        if 1 <= y_diff <= 2:
+            return True
+
     return False
 
 
